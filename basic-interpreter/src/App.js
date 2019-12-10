@@ -1,25 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [terminal, setTerminal] = useState('');
+
+  const handleChange = (event) => {
+    const {name, value} = event.target;
+    if (name === "terminal") {
+      setTerminal(value)
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <main className="frame">
+      <header>
+        <h1 className="heading">**** Commodore 64 ****</h1>
+        <h1 className="heading">64K ram system 38911 basic bytes free</h1>
       </header>
-    </div>
+      {/* <span class="heading heading_span">Ready .</span> */}
+      <div id="terminal-container">
+        <textarea type="text" id="terminal" name="terminal" onChange={(e) => handleChange(e)} autoFocus/>
+      </div>
+    </main>
   );
 }
 
