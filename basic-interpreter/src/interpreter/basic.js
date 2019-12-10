@@ -360,9 +360,9 @@ function Tokenizer(input) {
 
     this.toString = function() {
         var result = "current token: " + this.current_token + "\n";
-        for (i = 0; i < this.tokens.length; i++) {
+        for (let i = 0; i < this.tokens.length; i++) {
             result += "<" + i + "> " + this.tokens[i].toString();
-            result + "\n";
+            result += "\n";
         }
         return result;
     };
@@ -449,7 +449,7 @@ function Line(number) {
     this.toString = function() {
         var result = "[ LINE# " + this.linenumber + "] ";
         for (var i = 0; i < this.statements.length; i++) {
-            s = this.statements[i];
+            const s = this.statements[i];
             result += "ST >> " + s.toString();
         }
         result += "[END OF LINE# " + this.linenumber + "]";
@@ -623,8 +623,8 @@ export function Parser(text) {
     }
 
     this.processLine = function(t) {
-        linenum = parseInt(t.getText());
-        l = new Line(linenum);
+        const linenum = parseInt(t.getText());
+        const l = new Line(linenum);
         l.setStatements(this.getStatementsTree());
         this.lines[this.lines.length] = l;
     };
@@ -632,7 +632,7 @@ export function Parser(text) {
     this.toString = function() {
         var result = "***\n";
         for (var i = 0; i < this.lines.length; i++) {
-            line = this.lines[i];
+            const line = this.lines[i];
             result += line.toString();
             result += "---\n";
         }
@@ -678,7 +678,7 @@ export function Parser(text) {
     }
 
     this.mult_expr = function() {
-        node = this.unary_expr();
+        let node = this.unary_expr();
         // x -> (x)
         // 1*2/3  1-> (/ (* 1 2) 3)
         while (this.accept("MULT_OPERATOR")) {
@@ -1308,7 +1308,7 @@ export function Interpreter(parser) {
     function debug(text) {
         if (debug_enabled) {
             if (typeof(document) == "undefined") {
-                print(text);
+                console.debug(text);
             } else {
                 document.writeln(text);
             }
@@ -1799,7 +1799,7 @@ export function Interpreter(parser) {
         var statement = self.parser.statements[idx];
         var v = self.evalExpr(statement.children[0]);
         if (is_number(v)) {
-            random.setSeed(v);
+            this.random.setSeed(v);
         } else {
             throw "ERROR: RANDOMIZE expects number as argument";
         }
@@ -1837,10 +1837,10 @@ export function Interpreter(parser) {
         var exprvalue = self.evalExpr(expression);
         debug(exprvalue);
         if (exprvalue) {
-            thenpart = statement.children[1];
+            const thenpart = statement.children[1];
             return self.find_label(thenpart.getText());
         } else {
-            elsepart = statement.children[2];
+            const elsepart = statement.children[2];
             return self.find_label(elsepart.getText());
         }
         return idx + 1;
