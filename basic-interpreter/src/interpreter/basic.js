@@ -497,7 +497,7 @@ function Node(type, text) {
 }
 
 
-export function Parser(text) {
+function Parser(text) {
     this.text = text;
 
     /*code that has line numbers goes here*/
@@ -1134,6 +1134,10 @@ export function Parser(text) {
         while (this.hasMoreTokens()) {
             this.accept("ENDOFLINE");
             var t = this.tokenizer.nextToken();
+            // TODO this might break things....
+            if (t.text.toUpperCase() === "RUN") {
+                continue;
+            }
             if (t.getType() === "NUMBER") {
                 this.processLine(t);
             } else {
@@ -1265,7 +1269,7 @@ function Random(seed) {
 }
 
 
-export function Interpreter(parser) {
+function Interpreter(parser) {
     this.parser = parser;
     this.ifunctions = new Array;
     this.stop = false;
@@ -2203,3 +2207,6 @@ export function Interpreter(parser) {
     this.ifunctions["CLEAR"] = this.clear_statement;
 }
 
+const Basic = [Parser, Interpreter];
+
+export default Basic;
