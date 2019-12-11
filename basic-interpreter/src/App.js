@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BasicRunner from './interpreter/BasicRunner';
 import './App.css';
+import './crt.css';
 
 const App = () => {
   const [terminalText, setTerminalText] = useState('');
@@ -21,7 +22,7 @@ const App = () => {
       if (last.toLowerCase() === 'run') {
         /* Run basic */
 
-        // Find text between last "ready" and only run that
+        // Find text since last "ready" and only run that
         let textToRun = '';
         for (let i = inputLines.length - 1; i >= 0; i--) {
           if (inputLines[i].match(/READY/g)) {
@@ -66,6 +67,7 @@ const App = () => {
           onKeyPress={(e) => handleTerminalKeyPress(e)}
         />
       </div>
+      <div className="overlay">AV-1</div>
     </main>
   );
 }

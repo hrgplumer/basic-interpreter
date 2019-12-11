@@ -7,9 +7,7 @@ const BasicRunner = (terminalInput, printFunction) => {
     const [Parser, Interpreter] = Basic;
     
     try {
-        console.log(`basic runner receives: ${terminalInput}`);
         const parser = new Parser(terminalInput);
-        console.log({terminalInput});
         parser.parse();
 
         const interpreter = new Interpreter();
