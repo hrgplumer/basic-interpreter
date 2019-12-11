@@ -18,15 +18,32 @@ const App = () => {
       // get last line of terminal
       const inputLines = terminalText.split('\n');
       const last = inputLines.length > 0 ? inputLines[inputLines.length - 1] : '';
-
       if (last.toLowerCase() === 'run') {
-        // run basic
-        const basic = BasicRunner(terminalText, (text, endOfLine) => {
+        /* Run basic */
+
+        // Find text between last "ready" and only run that
+        let textToRun = '';
+        for (let i = inputLines.length - 1; i >= 0; i--) {
+          if (inputLines[i].match(/READY/g)) {
+            break;
+          }
+          
+          // Ensure textToRun has no trailing \n, because this will cause errors in parsing
+          textToRun = i === inputLines.length - 1? inputLines[i] + textToRun : inputLines[i] + '\n' + textToRun;
+        }
+
+        const basic = BasicRunner(textToRun, (text, endOfLine) => {
           setTerminalText(prev => {
-            const newText = `${prev}\n ${text.trim()}${endOfLine ? '\n' : ''}`
+            const newText = `${prev}\n${text}${endOfLine ? '\n' : ''}`
             return newText;
           });
         });
+
+        // Append "READY." to terminal after execution
+        setTerminalText(prev => prev + 'READY.');
+      }
+      else if (last.toLowerCase() === 'clear') {
+        setTerminalText('');
       }
     }
   }

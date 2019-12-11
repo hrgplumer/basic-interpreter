@@ -42,7 +42,7 @@ function is_number(m) {
 }
 
 function is_space(c) {
-    return c == " " || c == "\t" || c == "\v" || c == "\f";
+    return c === " " || c === "\t" || c === "\v" || c === "\f";
 }
 
 function is_digit(c) {
@@ -50,13 +50,13 @@ function is_digit(c) {
 }
 
 function is_digit_in_base(c, base) {
-    if (base == 10) {
+    if (base === 10) {
         return c >= '0' && c <= '9';
     }
-    if (base == 8) {
+    if (base === 8) {
         return c >= '0' && c <= '7';
     }
-    if (base == 16) {
+    if (base === 16) {
         var d = c.toUpperCase();
         return (c >= '0' && c <= '9') || (d >= 'A' && d <= 'F');
     }
@@ -124,7 +124,7 @@ function Tokenizer(input) {
                 next = -1;
             }
 
-            if (c == ".") {
+            if (c === ".") {
                 var start = i;
                 i++;
                 c = input[i];
@@ -145,17 +145,17 @@ function Tokenizer(input) {
                     c = input[i];
                 }
 
-                if (i < input.length && c == ".") {
+                if (i < input.length && c === ".") {
                     i++;
                     c = input[i];
                     while (i < input.length && is_digit(c)) {
                         i++;
                         c = input[i];
                     }
-                } else if (i < input.length && c == "E") {
+                } else if (i < input.length && c === "E") {
                     i++;
                     c = input[i];
-                    if (i < input.length && (c == "+" || c == "-")) {
+                    if (i < input.length && (c === "+" || c === "-")) {
                         i++;
                         c = input[i];
                         while (i < input.length && is_digit(c)) {
@@ -167,7 +167,7 @@ function Tokenizer(input) {
 
                 var number = input.substring(start, i);
 
-                if (c == "#" || c == "!") { //ignore 123#
+                if (c === "#" || c === "!") { //ignore 123#
                     i++;
                 }
 
@@ -176,14 +176,14 @@ function Tokenizer(input) {
                 continue;
             }
 
-            if (c == "&") {
+            if (c === "&") {
                 var base = 8;
                 var start = i + 1;
-                if (next.toUpperCase() == "H") {
+                if (next.toUpperCase() === "H") {
                     base = 16;
                     i += 2;
                     start++;
-                } else if (next.toUpperCase() == "O") {
+                } else if (next.toUpperCase() === "O") {
                     i += 2;
                     start++;
                 }
@@ -209,7 +209,7 @@ function Tokenizer(input) {
                     c = input[i];
                 }
 
-                if (c == "$" || c == "!" || c == "#" || c == "%") {
+                if (c === "$" || c === "!" || c === "#" || c === "%") {
                     i++;
                 }
 
@@ -236,7 +236,7 @@ function Tokenizer(input) {
                 continue;
             }
 
-            if (c == "\"") {
+            if (c === "\"") {
                 var start = i;
                 i++;
                 if (i >= input.length) {
@@ -266,56 +266,56 @@ function Tokenizer(input) {
                 continue;
             }
 
-            if (c == "*" || c == "/" || c == "^" || c == "\\") {
+            if (c === "*" || c === "/" || c === "^" || c === "\\") {
                 i++;
                 var t = new Token(c, "MULT_OPERATOR");
                 this.addToken(t);
                 continue;
             }
 
-            if (c == "(") {
+            if (c === "(") {
                 i++;
                 var t = new Token(c, "OPENPAREN");
                 this.addToken(t);
                 continue;
             }
 
-            if (c == ")") {
+            if (c === ")") {
                 i++;
                 var t = new Token(c, "CLOSEPAREN");
                 this.addToken(t);
                 continue;
             }
 
-            if (c == "+" || c == "-") {
+            if (c === "+" || c === "-") {
                 i++;
                 var t = new Token(c, "PLUS_OPERATOR");
                 this.addToken(t);
                 continue;
             }
 
-            if (c == "'") {
+            if (c === "'") {
                 i++;
                 var t = new Token(c, "COMMENT");
                 this.addToken(t);
                 continue;
             }
 
-            if (c == ":") {
+            if (c === ":") {
                 i++;
                 var t = new Token(c, "STATEMENT_DELIMITER");
                 this.addToken(t);
                 continue;
             }
 
-            if (c == "," || c == ";") {
+            if (c === "," || c === ";") {
                 i++;
                 var t = new Token(c, "DELIMITER");
                 this.addToken(t);
                 continue;
             }
 
-            if (c == "=") {
+            if (c === "=") {
                 //actually ambiguous, might be equality testing
                 i++;
                 var t = new Token(c, "ASSIGNMENT");
@@ -323,13 +323,13 @@ function Tokenizer(input) {
                 continue;
             }
 
-            if (c == ">" || c == "<") {
+            if (c === ">" || c === "<") {
                 i++;
-                if (c == "<" && next == ">") {
+                if (c === "<" && next === ">") {
                     i++;
                     t = new Token("<>", "RELATIONAL");
                 } else {
-                    if (next == '=') {
+                    if (next === '=') {
                         i++;
                         t = new Token(c + "=", "RELATIONAL");
                     } else {
@@ -339,9 +339,9 @@ function Tokenizer(input) {
                 this.addToken(t);
                 continue;
             }
-            if (c == "\r" || c == "\n") {
+            if (c === "\r" || c === "\n") {
                 i++;
-                if (c == "\r" && next == "\n") {
+                if (c === "\r" && next === "\n") {
                     i++;
                 }
                 var t = new Token("--", "ENDOFLINE");
@@ -373,7 +373,7 @@ function Tokenizer(input) {
             return false;
         }
         var t = this.tokens[this.current_token];
-        if (t.getText().toUpperCase() == text.toUpperCase()) {
+        if (t.getText().toUpperCase() === text.toUpperCase()) {
             this.last_token = t;
             this.nextToken();
             return true;
@@ -387,7 +387,7 @@ function Tokenizer(input) {
             return false;
         }
         var t = this.tokens[this.current_token];
-        if (t.getText().toUpperCase() == text.toUpperCase()) {
+        if (t.getText().toUpperCase() === text.toUpperCase()) {
             return true;
         }
         return false;
@@ -522,11 +522,11 @@ function Parser(text) {
         /**
            for IF GOTO, don't change
          */
-        if (ifs.children[1].getType() == "GOTO") {
+        if (ifs.children[1].getType() === "GOTO") {
             dest.push(ifs);
             return;
         }
-        if (ifs.children[1].getType() == "GOSUB") {
+        if (ifs.children[1].getType() === "GOSUB") {
             dest.push(ifs);
             return;
         }
@@ -539,7 +539,7 @@ function Parser(text) {
         var newif = new Node("IF");
         newif.addChild(ifs.children[0]);
         newif.addChild(new Node("GOTO", label_true));
-        if (ifs.children.length == 3) {
+        if (ifs.children.length === 3) {
             //only if there is else part
             newif.addChild(new Node("GOTO", label_false));
         } else {
@@ -554,7 +554,7 @@ function Parser(text) {
             dest.push(thenpart.children[i]);
         }
         //have else part
-        if (ifs.children.length == 3) {
+        if (ifs.children.length === 3) {
             dest.push(new Node("GOTO", label_done));
             var elsepart = ifs.children[2];
             dest.push(new Node("LINENUMBER", label_false));
@@ -571,7 +571,7 @@ function Parser(text) {
             this.statements.push(new Node("LINENUMBER", line.linenumber));
             for (var j = 0; j < line.statements.length; j++) {
                 var stmt = line.statements[j];
-                if (stmt.getType() == "IF") {
+                if (stmt.getType() === "IF") {
                     this.expand_if(this.statements, stmt, j, i);
                 } else {
                     this.statements.push(stmt);
@@ -582,7 +582,7 @@ function Parser(text) {
 
         for (var i = 0; i < this.statements.length; i++) {
             var stmt = this.statements[i];
-            if (stmt.getType() == "LINENUMBER") {
+            if (stmt.getType() === "LINENUMBER") {
                 if (this.label_index[stmt.getText()] === undefined) {
                     this.label_index[stmt.getText()] = i;
                 } else {
@@ -1135,7 +1135,7 @@ function Parser(text) {
             this.accept("ENDOFLINE");
             var t = this.tokenizer.nextToken();
             // TODO this might break things....
-            if (t.text.toUpperCase() === "RUN") {
+            if (t && t.text.toUpperCase() === "RUN") {
                 continue;
             }
             if (t.getType() === "NUMBER") {
@@ -1192,7 +1192,7 @@ function Variable(name) {
         }
 
         var val;
-        if (name[name.length - 3] == "$") {
+        if (name[name.length - 3] === "$") {
             val = "";
         } else {
             val = 0;
@@ -1204,7 +1204,7 @@ function Variable(name) {
     }
 
     this.getDimension = function() {
-        return this.bounds == null ? 0 : this.bounds.length;
+        return this.bounds === null ? 0 : this.bounds.length;
     }
 
     this.compute_pos = function(indices) {
@@ -1311,7 +1311,7 @@ function Interpreter(parser) {
 
     function debug(text) {
         if (debug_enabled) {
-            if (typeof(document) == "undefined") {
+            if (typeof(document) === "undefined") {
                 console.debug(text);
             } else {
                 document.writeln(text);
@@ -1333,7 +1333,7 @@ function Interpreter(parser) {
 
     this.ensure_exist = function(identifier) {
         var name = identifier.getText();
-        if (identifier.getType() == "ARRAY") {
+        if (identifier.getType() === "ARRAY") {
             name += "[]";
             if (this.variables[name] === undefined) {
                 var v = new Variable(name);
@@ -1346,7 +1346,7 @@ function Interpreter(parser) {
             if (this.variables[name] === undefined) {
                 var v = new Variable(name);
                 this.variables[name] = v;
-                if (name[name.length - 1] == "$") {
+                if (name[name.length - 1] === "$") {
                     v.setValue("");
                 } else {
                     v.setValue(0);
@@ -1358,7 +1358,7 @@ function Interpreter(parser) {
     this.getValue = function(identifier) {
         var name = identifier.getText();
         this.ensure_exist(identifier);
-        if (identifier.getType() == "ARRAY") {
+        if (identifier.getType() === "ARRAY") {
             name += "[]";
             var variable = this.variables[name];
             var indices = this.get_array_indices(identifier);
@@ -1397,7 +1397,7 @@ function Interpreter(parser) {
     this.setValue = function(identifier, value) {
         var name = identifier.getText();
         this.ensure_exist(identifier);
-        if (identifier.getType() == "ARRAY") {
+        if (identifier.getType() === "ARRAY") {
             debug("SET VALUE array " + value);
             name += "[]";
             var variable = this.variables[name];
@@ -1417,7 +1417,7 @@ function Interpreter(parser) {
     }
 
     this.expect_param = function(f, n, m) {
-        if (m == undefined) {
+        if (m === undefined) {
             if (f.children.length != n) {
                 throw "ERROR: function '" + f.text +
                     "' expects " + n + " parameter(s), but got " +
@@ -1448,7 +1448,7 @@ function Interpreter(parser) {
 
             case "RND":
                 this.expect_param(f, 0, 1);
-                if (paramcount == 0) {
+                if (paramcount === 0) {
                     this.last_random = this.random.random();
                     return this.last_random;
                 } else {
@@ -1588,7 +1588,7 @@ function Interpreter(parser) {
                 if (typeof(val) === "string") {
                     var n = this.evalExpr(f.children[1]);
                     if (is_number(n)) {
-                        if (paramcount == 2) {
+                        if (paramcount === 2) {
                             return val.substring(n);
                         }
                         var m = this.evalExpr(f.children[2]);
@@ -1603,15 +1603,15 @@ function Interpreter(parser) {
                 var val = this.evalExpr(f.children[0]);
                 if (typeof(val) === "string") {
                     var substr = this.evalExpr(f.children[1]);
-                    if (typeof(substr) == "string") {
+                    if (typeof(substr) === "string") {
                         return val.indexOf(substr) + 1;
                     }
                 } else if (is_number(val)) {
                     var start = val;
                     var str = this.evalExpr(f.children[1]);
-                    if (typeof(str) == "string") {
+                    if (typeof(str) === "string") {
                         var substr = this.evalExpr(f.children[2]);
-                        if (typeof(substr) == "string") {
+                        if (typeof(substr) === "string") {
                             return str.indexOf(substr) + 1;
                         }
                     }
@@ -1624,16 +1624,16 @@ function Interpreter(parser) {
 
         var type = expr.getType();
 
-        if (type == "EXPRESSION") {
+        if (type === "EXPRESSION") {
             expr = expr.children[0];
             type = expr.getType();
         }
 
         var text = expr.getText();
         debug("EVAL TYPE = " + type + " TEXT " + text);
-        if (type == "STRING")
+        if (type === "STRING")
             return expr.getText();
-        if (type == "NUMBER") {
+        if (type === "NUMBER") {
             var t = expr.getText();
             if (is_number(t))
                 return t;
@@ -1654,8 +1654,8 @@ function Interpreter(parser) {
         if (right !== undefined)
             rightval = this.evalExpr(right);
 
-        if (text == "=")
-            return leftval == rightval;
+        if (text === "=")
+            return leftval === rightval;
 
         switch (type) {
             case "*":
@@ -1671,7 +1671,7 @@ function Interpreter(parser) {
             case "-":
                 return leftval - rightval;
             case "=":
-                return leftval == rightval;
+                return leftval === rightval;
             case ">":
                 return leftval > rightval;
             case "<":
@@ -1719,7 +1719,7 @@ function Interpreter(parser) {
         var statement = self.parser.statements[idx];
         var count = statement.children.length;
         var prompt = statement.children[0].text;
-        if (self.print_function && self.last_input_var == 0) {
+        if (self.print_function && self.last_input_var === 0) {
             self.print_function(prompt, false);
             self.last_input_var = 1;
         }
@@ -1733,7 +1733,7 @@ function Interpreter(parser) {
                 continue;
             }
 
-            if (name[name.length - 1] == "$") {
+            if (name[name.length - 1] === "$") {
                 if (self.string_input_function) {
                     value = self.string_input_function(prompt);
                 } else {
@@ -1746,7 +1746,7 @@ function Interpreter(parser) {
                     throw "ERROR: number input function not defined";
                 }
             }
-            if (value == null) {
+            if (value === null) {
                 self.last_input_var = i;
                 return -1; //pause until we get value for input
             }
@@ -1773,16 +1773,16 @@ function Interpreter(parser) {
                 var res = self.evalExpr(child);
                 result += res;
             }
-            if (child.getType() == "DELIMITER") {
+            if (child.getType() === "DELIMITER") {
                 var t = child.text;
-                if (t == ",")
+                if (t === ",")
                     result += "   ";
             }
         }
 
         var eol = true;
 
-        if (count > 0 && statement.children[count - 1].text == ";") {
+        if (count > 0 && statement.children[count - 1].text === ";") {
             eol = false;
         }
 
@@ -1822,7 +1822,7 @@ function Interpreter(parser) {
 
     this.find_label = function(label) {
         var label_index = this.parser.label_index;
-        if (label_index[label] == undefined)
+        if (label_index[label] === undefined)
             throw "ERROR: goto destination " + label + " not found";
         debug("NEXT INDEX" + label_index[label]);
         return label_index[label];
@@ -1868,7 +1868,7 @@ function Interpreter(parser) {
     }
 
     this.return_statement = function(self, idx) {
-        if (self.gosub_stack.length == 0) {
+        if (self.gosub_stack.length === 0) {
             throw "ERROR: RETURN without GOSUB";
         }
         var nidx = self.gosub_stack.pop();
@@ -1880,9 +1880,9 @@ function Interpreter(parser) {
         var len = this.parser.statements.length;
         for (var i = idx + 1; i < len; i++) {
             var statement = this.parser.statements[i];
-            if (statement.getType() == "NEXT") {
+            if (statement.getType() === "NEXT") {
                 /*next without variable match with anything*/
-                if (statement.children.length == 0) {
+                if (statement.children.length === 0) {
                     return i;
                 }
                 var nextlen = statement.children.length;
@@ -1900,7 +1900,7 @@ function Interpreter(parser) {
         var len = this.parser.statements.length;
         for (var i = idx + 1; i < len; i++) {
             var statement = this.parser.statements[i];
-            if (statement.getType() == "WEND") {
+            if (statement.getType() === "WEND") {
                 return i;
             }
         }
@@ -1926,7 +1926,7 @@ function Interpreter(parser) {
 
     this.wend_statement = function(self, idx) {
 
-        if (self.while_stack.length == 0) {
+        if (self.while_stack.length === 0) {
             throw "ERROR:  WEND without while";
         }
         var statement = self.parser.statements[idx];
@@ -1953,7 +1953,7 @@ function Interpreter(parser) {
         }
 
         var stepval = 1;
-        if (statement.children.length == 4) {
+        if (statement.children.length === 4) {
             var step = statement.children[3];
             stepval = self.evalExpr(step);
         }
@@ -1984,7 +1984,7 @@ function Interpreter(parser) {
 
     this.next_statement = function(self, idx) {
 
-        if (self.for_stack.length == 0) {
+        if (self.for_stack.length === 0) {
             throw "ERROR: NEXT without FOR";
         }
         var statement = self.parser.statements[idx];
@@ -1996,7 +1996,7 @@ function Interpreter(parser) {
         var loopvar = loop_info.lvar;
         debug("NEXT TO " + nidx);
 
-        if (statement.children.length == 0) {
+        if (statement.children.length === 0) {
             var val = self.getNumericValue(loopvar);
             debug("val " + val + " STEP: " + loop_info.step);
             val += loop_info.step;
@@ -2032,10 +2032,10 @@ function Interpreter(parser) {
                 }
                 if (done) {
                     self.for_stack.pop();
-                    if (j == nextlen - 1) {
+                    if (j === nextlen - 1) {
                         return idx + 1;
                     }
-                    if (self.for_stack.length == 0) {
+                    if (self.for_stack.length === 0) {
                         throw "ERROR: NEXT without FOR";
                     }
 
@@ -2110,7 +2110,7 @@ function Interpreter(parser) {
         while (!this.stop && idx < len) {
             //debug("CURRENT = " + idx);
             var newidx = this.run(idx);
-            if (newidx == -1) {
+            if (newidx === -1) {
                 this.last_point = idx;
                 break;
             }
@@ -2141,7 +2141,7 @@ function Interpreter(parser) {
 
         for (var i = 0; i < len; i++) {
             var statement = this.parser.statements[i];
-            if (statement.getType() == "DATA") {
+            if (statement.getType() === "DATA") {
                 var datacount = statement.children.length;
                 for (var j = 0; j < datacount; j++) {
                     this.data.push(statement.children[j]);
@@ -2172,7 +2172,7 @@ function Interpreter(parser) {
                 errstr += err;
                 throw errstr;
             }
-            if (newidx == -1) {
+            if (newidx === -1) {
                 this.last_point = idx;
                 break;
             }
