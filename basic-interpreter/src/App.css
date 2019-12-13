@@ -1,7 +1,7 @@
 html,
 body {
     min-height: 100vh;
-    font-size: 16px;
+    font-size: 1.4vw;
     margin: 0;
 }
 
@@ -37,7 +37,7 @@ body::after {
 .heading {
     text-align: center;
     text-transform: uppercase;
-    font-size: 1.8vw;
+    font-size: inherit;
     padding: 0.9vw;
     margin: 0;
 }
@@ -51,7 +51,7 @@ textarea#terminal {
     resize: none;
     outline: none;
     text-transform: uppercase;
-    font-size: 1.8vw;
+    font-size: inherit;
     font-family: inherit;
     padding: 0.9vw;
     letter-spacing: .2vw;
