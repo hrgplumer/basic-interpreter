@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import useTerminalEvents from './hooks/useTerminalEvents';
+import useBeep from './hooks/useBeep';
 import './App.css';
 import './crt.css';
 
 const App = () => {
   const [terminalText, setTerminalText] = useState('');
-  const [handleTerminalChange, handleTerminalKeyPress] = useTerminalEvents(terminalText, setTerminalText);
+  //const [beepNow] = useBeep('../public/blip.aiff');
+  const [handleTerminalChange, handleTerminalKeyPress] = useTerminalEvents(terminalText, setTerminalText /*, beepNow */);
 
   return (
     <main className="frame">
