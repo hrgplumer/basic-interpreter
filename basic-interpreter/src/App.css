@@ -7,20 +7,37 @@
 
 html,
 body {
-    height: 100vh;
+    min-height: 100vh;
     font-size: 16px;
 }
 
 body {
-    background-color: #A0A0FF;
-    padding: 4.5vw;
+    /* background-color: #A0A0FF;
+    padding: 4.5vw; */
     font-family: c64_userregular, helvetica, sans-serif;
     letter-spacing: .2vw;
+    text-shadow: 0 0 2px #C8C8C8;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      #000,
+      #000 1px,
+      transparent 1px,
+      transparent 2px
+    );
 }
 
 .frame {
     background-color: #4040E0;
-    height: 90vh;
+    height: 100vh;
     padding: 1.5vw 0;
     color: #A0A0FF;
 }
@@ -31,15 +48,6 @@ body {
     font-size: 1.8vw;
     padding: 0.9vw;
 }
-
-/* .blinky_cursor {
-    display: block;
-    margin: 0.2vw 0;
-    width: 1.8vw;
-    height: 1.8vw;
-    background-color: #A0A0FF;
-    animation: 1s blink step-end infinite;
-} */
 
 textarea#terminal {
     width: 95%;
@@ -54,10 +62,10 @@ textarea#terminal {
     font-family: inherit;
     padding: 0.9vw;
     letter-spacing: .2vw;
-    /* overflow-y: scroll; */
+    overflow-y: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    
+    text-shadow: 0 0 2px #C8C8C8;
 }
 
 textarea#terminal::-webkit-scrollbar {
@@ -74,27 +82,6 @@ textarea#terminal::-webkit-scrollbar {
     right: 0px;
     top: 0px;
     bottom: 0px;
-    padding: 20vw 4.7vw 0;
+    padding: 15vw 4.7vw 0;
     z-index: 1;
 }
-
-/* .cursor {
-    font-size: 2.4vw;
-    background-color: #A0A0FF;
-    color: transparent;
-    position: relative;
-    animation: 1s blink step-end infinite;
-    position: relative;
-    left: -10px;
-}
-
-@keyframes blink {
-    from,
-    to {
-        background-color: rgba(0, 0, 0, .0);
-        background-color: transparent;
-    }
-    50% {
-        background-color: #A0A0FF;
-    }
-} */

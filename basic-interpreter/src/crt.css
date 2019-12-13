@@ -132,7 +132,7 @@ Adapted for use in this app */
 }
 
 body {
-	animation: turn-on 7s linear;
+	animation: turn-on 3s linear;
     animation-fill-mode: forwards;
 }
 
