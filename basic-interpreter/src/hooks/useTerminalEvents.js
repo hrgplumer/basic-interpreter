@@ -1,6 +1,6 @@
 import BasicRunner from '../interpreter/BasicRunner';
 
-const useTerminalEvents = (terminalText, setTerminalTextFunction) => {
+const useTerminalEvents = (terminalText, setTerminalTextFunction, beepFunction) => {
     const handleTerminalChange = (event) => {
         const { name, value } = event.target;
         if (name === "terminal") {
@@ -28,15 +28,25 @@ const useTerminalEvents = (terminalText, setTerminalTextFunction) => {
                     textToRun = i === inputLines.length - 1 ? inputLines[i] + textToRun : inputLines[i] + '\n' + textToRun;
                 }
 
-                const basic = BasicRunner(textToRun, (text, endOfLine) => {
+                const basic = BasicRunner(textToRun,
+                    (text, endOfLine) => { // print function
                     setTerminalTextFunction(prev => {
                         const newText = `${prev}\n${text}${endOfLine ? '\n' : ''}`
                         return newText;
-                    });
-                });
+                    })},
+                    () => { // string input function
+                        const input = prompt('Enter input:');
+                        return input;
+                    },
+                    () => { // numeric input function
+                        const number = prompt('Enter a number:');
+                        return parseFloat(number);
+                    }
+                );
 
                 // Append "READY." to terminal after execution
                 setTerminalTextFunction(prev => prev + 'READY.');
+                //beepFunction();
             }
             else if (last.toLowerCase() === 'clear') {
                 setTerminalTextFunction('');
