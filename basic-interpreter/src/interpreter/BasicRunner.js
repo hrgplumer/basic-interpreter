@@ -14,10 +14,10 @@ const BasicRunner = (terminalInput, printFunction) => {
         interpreter.setParser(parser);
         interpreter.print_function = printFunction;
         interpreter.interpret();
-        return interpreter;
+        return 'OK';
     } catch (error) {
         console.trace(error);
-        return null;
+        return error;
     }
 }
 
