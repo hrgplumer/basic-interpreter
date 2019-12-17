@@ -2,94 +2,21 @@
 CRT Animation effects 
 Adapted for use in this app */
 
-@keyframes flicker {
-	0% {
-		opacity: 0.78789;
-	}
-
-	5% {
-		opacity: 0.25689;
-	}
-
-	10% {
-		opacity: 0.69513;
-	}
-
-	15% {
-		opacity: 0.63644;
-	}
-
-	20% {
-		opacity: 0.95963;
-	}
-
-	25% {
-		opacity: 0.44966;
-	}
-
-	30% {
-		opacity: 0.23362;
-	}
-
-	35% {
-		opacity: 0.37592;
-	}
-
-	40% {
-		opacity: 0.47797;
-	}
-
-	45% {
-		opacity: 0.38188;
-	}
-
-	50% {
-		opacity: 0.70464;
-	}
-
-	55% {
-		opacity: 0.83645;
-	}
-
-	60% {
-		opacity: 0.1357;
-	}
-
-	65% {
-		opacity: 0.49193;
-	}
-
-	70% {
-		opacity: 0.4046;
-	}
-
-	75% {
-		opacity: 0.3241;
-	}
-
-	80% {
-		opacity: 0.88679;
-	}
-
-	85% {
-		opacity: 0.49929;
-	}
-
-	90% {
-		opacity: 0.43219;
-	}
-
-	95% {
-		opacity: 0.12872;
-	}
-
-	100% {
-		opacity: 0.91582;
-	}
+body {
+	animation: turn-on 3s linear;
+    animation-fill-mode: forwards;
 }
 
-#switch:checked ~ .container::after {
-	animation: flicker 0.15s infinite;
+.overlay {
+	color: #00FF00;
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	font-size: 60px;
+	visibility: hidden;
+    pointer-events: none;
+    animation: overlay-anim 10s linear;
+	animation-fill-mode: forwards;
 }
 
 @keyframes turn-on {
@@ -131,11 +58,6 @@ Adapted for use in this app */
 	}
 }
 
-body {
-	animation: turn-on 3s linear;
-    animation-fill-mode: forwards;
-}
-
 @keyframes overlay-anim {
 	0% {
 		visibility: hidden;
@@ -154,14 +76,3 @@ body {
 	}
 }
 
-.overlay {
-	color: #00FF00;
-	position: absolute;
-	top: 20px;
-	left: 20px;
-	font-size: 60px;
-	visibility: hidden;
-    pointer-events: none;
-    animation: overlay-anim 10s linear;
-	animation-fill-mode: forwards;
-}

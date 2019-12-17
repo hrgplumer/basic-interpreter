@@ -1,11 +1,9 @@
-html,
+:root,
 body {
+    --sizing-font: 1.4vw;
     min-height: 100vh;
-    font-size: 1.4vw;
+    font-size: max(var(--sizing-font), 18px);
     margin: 0;
-}
-
-body {
     font-family: c64_userregular, helvetica, sans-serif;
     letter-spacing: .2vw;
     text-shadow: 0 0 2px #C8C8C8;
@@ -30,14 +28,13 @@ body::after {
 .frame {
     background-color: #4040E0;
     height: 100vh;
-    /* padding: 1.5vw 0; */
     color: #A0A0FF;
 }
 
 .heading {
     text-align: center;
     text-transform: uppercase;
-    font-size: inherit;
+    font-size: max(var(--sizing-font), 14px);
     padding: 0.9vw;
     margin: 0;
 }
@@ -75,8 +72,15 @@ textarea#terminal::-webkit-scrollbar {
     right: 0px;
     top: 0px;
     bottom: 0px;
-    padding: 10vw 4.7vw 0;
+    padding: max(10vw, 100px) 4.7vw 0;
     z-index: 1;
+}
+
+@media only screen and (max-width: 1366px) {
+    /* Turn off crt effect on small screens, as it renders everything unreadable */
+    body::after {
+        content: none;
+    }
 }
 
 @font-face {
