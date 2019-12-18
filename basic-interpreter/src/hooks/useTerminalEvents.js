@@ -1,6 +1,6 @@
 import BasicRunner from '../interpreter/BasicRunner';
 
-const useTerminalEvents = (terminalText, setTerminalTextFunction, beepFunction) => {
+const useTerminalEvents = (terminalText, setTerminalTextFunction) => {
     const handleTerminalChange = (event) => {
         const { name, value } = event.target;
         if (name === "terminal") {
@@ -16,7 +16,6 @@ const useTerminalEvents = (terminalText, setTerminalTextFunction, beepFunction) 
             const last = inputLines.length > 0 ? inputLines[inputLines.length - 1] : '';
             if (last.toLowerCase() === 'run') {
                 /* Run basic */
-
                 // Find text since last "ready" and only run that
                 let textToRun = '';
                 for (let i = inputLines.length - 1; i >= 0; i--) {
