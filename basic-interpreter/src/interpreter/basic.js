@@ -24,21 +24,21 @@ function Token(text, type) {
     this.text = text;
     this.type = type;
 
-    this.toString = function() {
+    this.toString = function () {
         return "[" + this.text + "," + this.type + "]";
     }
 
-    this.getType = function() {
+    this.getType = function () {
         return this.type;
     }
 
-    this.getText = function() {
+    this.getText = function () {
         return this.text;
     }
 }
 
 function is_number(m) {
-    return typeof(m) === "number" || typeof(m) === "boolean";
+    return typeof (m) === "number" || typeof (m) === "boolean";
 }
 
 function is_space(c) {
@@ -82,35 +82,35 @@ function Tokenizer(input) {
     //last accepted token
     this.last_token = null;
 
-    this.reset = function() {
+    this.reset = function () {
         this.current_token = 0;
     };
 
-    this.hasMoreTokens = function() {
+    this.hasMoreTokens = function () {
         return (this.current_token < this.tokens.length);
     };
 
-    this.nextToken = function() {
+    this.nextToken = function () {
         return this.tokens[this.current_token++];
     };
 
-    this.lastToken = function() {
+    this.lastToken = function () {
         return this.last_token;
     }
 
-    this.currentToken = function() {
+    this.currentToken = function () {
         return this.tokens[this.current_token];
     }
 
-    this.addToken = function(t) {
+    this.addToken = function (t) {
         this.tokens[this.tokens.length] = t;
     };
 
-    this.isError = function() {
+    this.isError = function () {
         return this.error;
     }
 
-    this.tokenize = function() {
+    this.tokenize = function () {
         var keywords = /^(IF|THEN|ELSE|FOR|TO|STEP|GOTO|GOSUB|RETURN|NEXT|INPUT|LET|CLS|END|PRINT|DIM|DATA|READ|REM|END|OR|AND|MOD|WHILE|WEND|RANDOMIZE|SYSTEM|KEY|CLEAR)$/i;
         var functions = /^(VAL|STR\$|LEFT\$|RIGHT\$|MID\$|LEN|RND|INT|INSTR|ABS|ASC|CHR\$|SQR|STRING\$|SIN|COS|TAN|TIMER)$/i;
         var i = 0;
@@ -358,7 +358,7 @@ function Tokenizer(input) {
 
     }
 
-    this.toString = function() {
+    this.toString = function () {
         var result = "current token: " + this.current_token + "\n";
         for (let i = 0; i < this.tokens.length; i++) {
             result += "<" + i + "> " + this.tokens[i].toString();
@@ -368,7 +368,7 @@ function Tokenizer(input) {
     };
 
 
-    this.acceptText = function(text) {
+    this.acceptText = function (text) {
         if (!this.hasMoreTokens()) {
             return false;
         }
@@ -382,7 +382,7 @@ function Tokenizer(input) {
     }
 
 
-    this.will_acceptText = function(text) {
+    this.will_acceptText = function (text) {
         if (!this.hasMoreTokens()) {
             return false;
         }
@@ -393,13 +393,13 @@ function Tokenizer(input) {
         return false;
     }
 
-    this.unaccept = function(type) {
+    this.unaccept = function (type) {
         if (this.current_token > 0)
             this.current_token--;
     }
 
     /*like accept, but doesn't forward the token*/
-    this.will_accept = function(type) {
+    this.will_accept = function (type) {
         if (!this.hasMoreTokens()) {
             return false;
         }
@@ -410,7 +410,7 @@ function Tokenizer(input) {
         return false;
     }
 
-    this.accept = function(type) {
+    this.accept = function (type) {
         if (!this.hasMoreTokens()) {
             return false;
         }
@@ -423,7 +423,7 @@ function Tokenizer(input) {
         return false;
     }
 
-    this.expect = function(type) {
+    this.expect = function (type) {
         if (this.accept(type)) {
             return;
         }
@@ -442,11 +442,11 @@ function Line(number) {
     this.linenumber = number;
     this.statements = new Array;
 
-    this.setStatements = function(statements) {
+    this.setStatements = function (statements) {
         this.statements = statements;
     };
 
-    this.toString = function() {
+    this.toString = function () {
         var result = "[ LINE# " + this.linenumber + "] ";
         for (var i = 0; i < this.statements.length; i++) {
             const s = this.statements[i];
@@ -462,19 +462,19 @@ function Node(type, text) {
     this.text = text;
     this.children = new Array;
 
-    this.getText = function() {
+    this.getText = function () {
         return this.text;
     }
 
-    this.getType = function() {
+    this.getType = function () {
         return this.type;
     }
 
-    this.addChild = function(c) {
+    this.addChild = function (c) {
         this.children[this.children.length] = c;
     }
 
-    this.toString = function(level) {
+    this.toString = function (level) {
         if (level === undefined)
             level = 0;
 
@@ -508,7 +508,7 @@ function Parser(text) {
     this.label_index = new Array;
 
     /*idx is for generating unique labels*/
-    this.expand_if = function(dest, ifs, idx, line) {
+    this.expand_if = function (dest, ifs, idx, line) {
         /*convert IF A THEN B ELSE C to
           IF A THEN GOTO A_TRUE
           ELSE GOTO A_FALSE
@@ -565,7 +565,7 @@ function Parser(text) {
         dest.push(new Node("LINENUMBER", label_done));
     }
 
-    this.flatten = function() {
+    this.flatten = function () {
         for (var i = 0; i < this.lines.length; i++) {
             var line = this.lines[i];
             this.statements.push(new Node("LINENUMBER", line.linenumber));
@@ -596,40 +596,40 @@ function Parser(text) {
 
     this.tokenizer = null;
 
-    this.accept = function(t) {
+    this.accept = function (t) {
         return this.tokenizer.accept(t);
     };
 
-    this.will_accept = function(t) {
+    this.will_accept = function (t) {
         return this.tokenizer.will_accept(t);
     };
 
-    this.will_acceptText = function(t) {
+    this.will_acceptText = function (t) {
         return this.tokenizer.will_acceptText(t);
     }
 
-    this.hasMoreTokens = function() {
+    this.hasMoreTokens = function () {
         return this.tokenizer.hasMoreTokens();
     };
 
-    this.acceptText = function(t) {
+    this.acceptText = function (t) {
         return this.tokenizer.acceptText(t);
     };
 
 
-    this.lastText = function() {
+    this.lastText = function () {
         var x = this.tokenizer.lastToken();
         return x.getText();
     }
 
-    this.processLine = function(t) {
+    this.processLine = function (t) {
         const linenum = parseInt(t.getText());
         const l = new Line(linenum);
         l.setStatements(this.getStatementsTree());
         this.lines[this.lines.length] = l;
     };
 
-    this.toString = function() {
+    this.toString = function () {
         var result = "***\n";
         for (var i = 0; i < this.lines.length; i++) {
             const line = this.lines[i];
@@ -639,7 +639,7 @@ function Parser(text) {
         return result;
     }
 
-    this.atom = function() {
+    this.atom = function () {
         if (this.accept("NUMBER")) {
             return new Node("NUMBER", parseFloat(this.lastText()));
         } else if (this.will_accept("IDENTIFIER")) {
@@ -663,7 +663,7 @@ function Parser(text) {
         throw "ERROR: unexpected token " + x.getType() + " (" + x.getText() + ")";
     }
 
-    this.unary_expr = function() {
+    this.unary_expr = function () {
         if (this.acceptText("+")) {
             var node = new Node("UNARY_PLUS");
             node.addChild(this.atom());
@@ -677,7 +677,7 @@ function Parser(text) {
         return this.atom();
     }
 
-    this.mult_expr = function() {
+    this.mult_expr = function () {
         let node = this.unary_expr();
         // x -> (x)
         // 1*2/3  1-> (/ (* 1 2) 3)
@@ -691,7 +691,7 @@ function Parser(text) {
         return node;
     }
 
-    this.plus_expr = function() {
+    this.plus_expr = function () {
         var node = this.mult_expr();
         while (this.accept("PLUS_OPERATOR")) {
             var opnode = new Node(this.lastText());
@@ -704,7 +704,7 @@ function Parser(text) {
     }
 
 
-    this.relational = function() {
+    this.relational = function () {
         var node = this.plus_expr();
 
         while (this.accept("RELATIONAL") || this.acceptText("=")) {
@@ -718,7 +718,7 @@ function Parser(text) {
     };
 
 
-    this.logical = function() {
+    this.logical = function () {
         var node = this.relational();
         while (this.accept("LOGICAL_OPERATOR")) {
             var opnode = new Node(this.lastText());
@@ -730,7 +730,7 @@ function Parser(text) {
         return node;
     };
 
-    this.expression = function() {
+    this.expression = function () {
         var node = new Node("EXPRESSION");
         var child = this.logical();
         node.addChild(child);
@@ -738,7 +738,7 @@ function Parser(text) {
     };
 
 
-    this.end_of_statement = function() {
+    this.end_of_statement = function () {
         if (this.will_accept("ENDOFLINE") ||
             this.will_accept("STATEMENT_DELIMITER") ||
             this.will_acceptText("ELSE") ||
@@ -748,7 +748,7 @@ function Parser(text) {
         return false;
     }
 
-    this.input_statement = function(self) {
+    this.input_statement = function (self) {
         var node = new Node("INPUT");
 
         var q = "?";
@@ -776,7 +776,7 @@ function Parser(text) {
         return node;
     }
 
-    this.identifier = function() {
+    this.identifier = function () {
         var node = new Node("VARIABLE");
         if (!this.accept("IDENTIFIER")) {
             this.accept("FUNCTION");
@@ -798,7 +798,7 @@ function Parser(text) {
         return node;
     }
 
-    this.dim_statement = function(self) {
+    this.dim_statement = function (self) {
         var node = new Node("DIM");
         if (self.will_accept("IDENTIFIER")) {
             while (self.hasMoreTokens()) {
@@ -822,7 +822,7 @@ function Parser(text) {
      * all statements before end of line is included in THEN part
      * if there is ELSE then the rest of the line goes to the ELSE part
      */
-    this.get_rest_of_line = function(node) {
+    this.get_rest_of_line = function (node) {
         /*if not end of token*/
 
         while (this.hasMoreTokens() &&
@@ -834,7 +834,7 @@ function Parser(text) {
         }
     }
 
-    this.rem_statement = function(self) {
+    this.rem_statement = function (self) {
         var node = new Node("REM");
         while (self.hasMoreTokens() &&
             !self.will_accept("ENDOFLINE")) {
@@ -842,7 +842,7 @@ function Parser(text) {
         }
     }
 
-    this.goto_statement = function(self) {
+    this.goto_statement = function (self) {
         var node = new Node("GOTO");
         if (self.accept("NUMBER")) {
             node.text = self.lastText();
@@ -851,14 +851,14 @@ function Parser(text) {
         throw "ERROR: GOTO should be followed by number";
     }
 
-    this.randomize_statement = function(self) {
+    this.randomize_statement = function (self) {
         var node = new Node("RANDOMIZE");
         node.addChild(self.expression());
         return node;
         throw "ERROR: RANDOMIZE should be followed by expression";
     }
 
-    this.gosub_statement = function(self) {
+    this.gosub_statement = function (self) {
         var node = new Node("GOSUB");
         if (self.accept("NUMBER")) {
             node.text = self.lastText();
@@ -867,22 +867,22 @@ function Parser(text) {
         throw "ERROR: GOSUB should be followed by number";
     }
 
-    this.return_statement = function(self) {
+    this.return_statement = function (self) {
         var node = new Node("RETURN");
         return node;
     }
 
-    this.cls_statement = function(self) {
+    this.cls_statement = function (self) {
         var node = new Node("CLS");
         return node;
     }
 
-    this.end_statement = function(self) {
+    this.end_statement = function (self) {
         var node = new Node("END");
         return node;
     }
 
-    this.for_statement = function(self) {
+    this.for_statement = function (self) {
         var node = new Node("FOR");
         if (!self.accept("IDENTIFIER")) {
             throw "ERROR: expected identifier in FOR statement";
@@ -909,7 +909,7 @@ function Parser(text) {
         return node;
     }
 
-    this.data_statement = function(self) {
+    this.data_statement = function (self) {
         var node = new Node("DATA");
         if (self.will_accept("NUMBER") || self.will_accept("STRING")) {
             while (self.hasMoreTokens()) {
@@ -930,7 +930,7 @@ function Parser(text) {
         return node;
     }
 
-    this.read_statement = function(self) {
+    this.read_statement = function (self) {
         var node = new Node("READ");
         while (self.hasMoreTokens()) {
             if (self.end_of_statement())
@@ -949,7 +949,7 @@ function Parser(text) {
         return node;
     }
 
-    this.next_statement = function(self) {
+    this.next_statement = function (self) {
         var node = new Node("NEXT");
         if (self.accept("IDENTIFIER")) {
             while (self.hasMoreTokens()) {
@@ -963,24 +963,24 @@ function Parser(text) {
         return node;
     }
 
-    this.while_statement = function(self) {
+    this.while_statement = function (self) {
         var node = new Node("WHILE");
         var expr = self.expression();
         node.addChild(expr);
         return node;
     }
 
-    this.wend_statement = function(self) {
+    this.wend_statement = function (self) {
         var node = new Node("WEND");
         return node;
     }
 
-    this.clear_statement = function(self) {
+    this.clear_statement = function (self) {
         var node = new Node("CLEAR");
         return node;
     }
 
-    this.if_statement = function(self) {
+    this.if_statement = function (self) {
         var node = new Node("IF");
         var expr = self.expression();
         node.addChild(expr);
@@ -1042,7 +1042,7 @@ function Parser(text) {
         throw "ERROR: expected THEN or GOTO in IF statement";
     }
 
-    this.print_statement = function(self) {
+    this.print_statement = function (self) {
         var node = new Node("PRINT");
         while (self.hasMoreTokens()) {
 
@@ -1067,7 +1067,7 @@ function Parser(text) {
         return node;
     };
 
-    this.key_statement = function(self) {
+    this.key_statement = function (self) {
         var node = new Node("KEY");
         if (self.acceptText("ON") || self.acceptText("OFF")) {
             node.text = self.lastText();
@@ -1077,7 +1077,7 @@ function Parser(text) {
     }
 
 
-    this.let_statement = function(self) {
+    this.let_statement = function (self) {
         var variable = self.identifier();
 
         if (self.acceptText("=")) {
@@ -1090,7 +1090,7 @@ function Parser(text) {
         throw "ERROR: expected '='";
     }
 
-    this.getStatement = function() {
+    this.getStatement = function () {
         if (this.accept("KEYWORD")) {
             var k = this.lastText().toUpperCase();
             if (this.functions[k]) {
@@ -1107,7 +1107,7 @@ function Parser(text) {
         throw "ERROR: statement error " + this.tokenizer;
     }
 
-    this.getStatementsTree = function() {
+    this.getStatementsTree = function () {
         if (!this.hasMoreTokens()) {
             throw "ERROR: unexpected end of program";
         }
@@ -1128,7 +1128,7 @@ function Parser(text) {
         return statements;
     }
 
-    this.parse = function() {
+    this.parse = function () {
         this.tokenizer = new Tokenizer(text);
 
         while (this.hasMoreTokens()) {
@@ -1178,7 +1178,7 @@ function Variable(name) {
     this.bounds = null;
     this.mult = null;
 
-    this.setBounds = function(dbounds) {
+    this.setBounds = function (dbounds) {
         this.value = new Array;
         this.bounds = new Array; /*a(4,3), bounds = 4,3*/
         this.mult = new Array; /*a(4,3), mult 1,4*/
@@ -1203,11 +1203,11 @@ function Variable(name) {
 
     }
 
-    this.getDimension = function() {
+    this.getDimension = function () {
         return this.bounds === null ? 0 : this.bounds.length;
     }
 
-    this.compute_pos = function(indices) {
+    this.compute_pos = function (indices) {
         var pos = 0;
         for (var i = 0; i < indices.length; i++) {
             pos += indices[i] * this.mult[i];
@@ -1215,7 +1215,7 @@ function Variable(name) {
         return pos;
     }
 
-    this.inBounds = function(indices) {
+    this.inBounds = function (indices) {
         if (indices.length != this.bounds.length)
             return false;
 
@@ -1227,7 +1227,7 @@ function Variable(name) {
         return true;
     }
 
-    this.setValue = function(value, indices) {
+    this.setValue = function (value, indices) {
         if (indices === undefined) {
             this.value = value;
             return;
@@ -1235,7 +1235,7 @@ function Variable(name) {
         this.value[this.compute_pos(indices)] = value;
     }
 
-    this.getValue = function(indices) {
+    this.getValue = function (indices) {
         if (indices === undefined) {
             return this.value;
         }
@@ -1257,12 +1257,12 @@ function Random(seed) {
         this.x0 = this.seed;
     }
 
-    this.setSeed = function(s) {
+    this.setSeed = function (s) {
         this.seed = s;
         this.x0 = s;
     }
 
-    this.random = function() {
+    this.random = function () {
         this.x0 = (this.x0 * a + c) % (z);
         return this.x0 / z;
     }
@@ -1305,13 +1305,13 @@ function Interpreter(parser) {
 
     this.data_pointer = 0;
 
-    this.push_input = function(v) {
+    this.push_input = function (v) {
         this.input_stack.push(v);
     }
 
     function debug(text) {
         if (debug_enabled) {
-            if (typeof(document) === "undefined") {
+            if (typeof (document) === "undefined") {
                 console.debug(text);
             } else {
                 document.writeln(text);
@@ -1319,7 +1319,7 @@ function Interpreter(parser) {
         }
     }
 
-    this.get_array_indices = function(identifier) {
+    this.get_array_indices = function (identifier) {
         var indices = new Array;
         for (var i = 0; i < identifier.children.length; i++) {
             indices[i] = this.evalExpr(identifier.children[i]);
@@ -1327,11 +1327,11 @@ function Interpreter(parser) {
         return indices;
     }
 
-    this.get_next_line = function(i) {
+    this.get_next_line = function (i) {
         return i + 1;
     }
 
-    this.ensure_exist = function(identifier) {
+    this.ensure_exist = function (identifier) {
         var name = identifier.getText();
         if (identifier.getType() === "ARRAY") {
             name += "[]";
@@ -1355,7 +1355,7 @@ function Interpreter(parser) {
         }
     }
 
-    this.getValue = function(identifier) {
+    this.getValue = function (identifier) {
         var name = identifier.getText();
         this.ensure_exist(identifier);
         if (identifier.getType() === "ARRAY") {
@@ -1372,7 +1372,7 @@ function Interpreter(parser) {
         }
     }
 
-    this.setNumericValue = function(name, value) {
+    this.setNumericValue = function (name, value) {
         if (this.variables[name] === undefined) {
             var v = new Variable(name);
             this.variables[name] = v;
@@ -1382,7 +1382,7 @@ function Interpreter(parser) {
         v.setValue(value);
     }
 
-    this.getNumericValue = function(name, value) {
+    this.getNumericValue = function (name, value) {
         if (this.variables[name] === undefined) {
             var v = new Variable(name);
             this.variables[name] = v;
@@ -1394,7 +1394,7 @@ function Interpreter(parser) {
         return v.getValue();
     }
 
-    this.setValue = function(identifier, value) {
+    this.setValue = function (identifier, value) {
         var name = identifier.getText();
         this.ensure_exist(identifier);
         if (identifier.getType() === "ARRAY") {
@@ -1416,23 +1416,23 @@ function Interpreter(parser) {
         }
     }
 
-    this.expect_param = function(f, n, m) {
+    this.expect_param = function (f, n, m) {
         if (m === undefined) {
             if (f.children.length != n) {
                 throw "ERROR: function '" + f.text +
-                    "' expects " + n + " parameter(s), but got " +
-                    f.children.length;
+                "' expects " + n + " parameter(s), but got " +
+                f.children.length;
             }
         }
 
         if (f.children.length < n || f.children.length > m) {
             throw "ERROR: function '" + f.text +
-                "' expects " + n + " to " + m + "parameters, but got " +
-                f.children.length;
+            "' expects " + n + " to " + m + "parameters, but got " +
+            f.children.length;
         }
     }
 
-    this.evalFunction = function(f) {
+    this.evalFunction = function (f) {
         var name = f.getText();
         debug("evalfunction " + name + " param count " + f.children.length);
         var paramcount = f.children.length;
@@ -1492,14 +1492,14 @@ function Interpreter(parser) {
             case "ASC":
                 this.expect_param(f, 1);
                 var val = this.evalExpr(f.children[0]);
-                if (typeof(val) === "string") {
+                if (typeof (val) === "string") {
                     return val.charCodeAt(0);
                 }
                 throw "ERROR: type mismatch for function ASC";
             case "LEN":
                 this.expect_param(f, 1);
                 var val = this.evalExpr(f.children[0]);
-                if (typeof(val) === "string") {
+                if (typeof (val) === "string") {
                     return val.length;
                 }
                 throw "ERROR: type mismatch for function LEN";
@@ -1521,7 +1521,7 @@ function Interpreter(parser) {
             case "SIN":
                 this.expect_param(f, 1);
                 var val = this.evalExpr(f.children[0]);
-                if (typeof(val) !== "string") {
+                if (typeof (val) !== "string") {
                     return Math.sin(val);
                 }
                 throw "ERROR: type mismatch for function SIN";
@@ -1551,7 +1551,7 @@ function Interpreter(parser) {
             case "VAL":
                 this.expect_param(f, 1);
                 var val = this.evalExpr(f.children[0]);
-                if (typeof(val) === "string") {
+                if (typeof (val) === "string") {
                     return parseFloat(val);
                 }
                 throw "ERROR: type mismatch for function VAL";
@@ -1565,7 +1565,7 @@ function Interpreter(parser) {
             case "LEFT$":
                 this.expect_param(f, 2);
                 var val = this.evalExpr(f.children[0]);
-                if (typeof(val) === "string") {
+                if (typeof (val) === "string") {
                     var n = this.evalExpr(f.children[1]);
                     if (is_number(n)) {
                         return val.substring(0, n);
@@ -1575,7 +1575,7 @@ function Interpreter(parser) {
             case "RIGHT$":
                 this.expect_param(f, 2);
                 var val = this.evalExpr(f.children[0]);
-                if (typeof(val) === "string") {
+                if (typeof (val) === "string") {
                     var n = this.evalExpr(f.children[1]);
                     if (is_number(n)) {
                         return val.substring(val.length - n);
@@ -1585,7 +1585,7 @@ function Interpreter(parser) {
             case "MID$":
                 this.expect_param(f, 2, 3);
                 var val = this.evalExpr(f.children[0]);
-                if (typeof(val) === "string") {
+                if (typeof (val) === "string") {
                     var n = this.evalExpr(f.children[1]);
                     if (is_number(n)) {
                         if (paramcount === 2) {
@@ -1601,17 +1601,17 @@ function Interpreter(parser) {
             case "INSTR":
                 this.expect_param(f, 2, 3);
                 var val = this.evalExpr(f.children[0]);
-                if (typeof(val) === "string") {
+                if (typeof (val) === "string") {
                     var substr = this.evalExpr(f.children[1]);
-                    if (typeof(substr) === "string") {
+                    if (typeof (substr) === "string") {
                         return val.indexOf(substr) + 1;
                     }
                 } else if (is_number(val)) {
                     var start = val;
                     var str = this.evalExpr(f.children[1]);
-                    if (typeof(str) === "string") {
+                    if (typeof (str) === "string") {
                         var substr = this.evalExpr(f.children[2]);
-                        if (typeof(substr) === "string") {
+                        if (typeof (substr) === "string") {
                             return str.indexOf(substr) + 1;
                         }
                     }
@@ -1620,7 +1620,7 @@ function Interpreter(parser) {
         }
     }
 
-    this.evalExpr = function(expr) {
+    this.evalExpr = function (expr) {
 
         var type = expr.getType();
 
@@ -1700,7 +1700,7 @@ function Interpreter(parser) {
 
     this.last_input_var = 0;
 
-    this.read_statement = function(self, idx) {
+    this.read_statement = function (self, idx) {
         var statement = self.parser.statements[idx];
         var count = statement.children.length;
         for (var i = 0; i < count; i++) {
@@ -1715,7 +1715,7 @@ function Interpreter(parser) {
         return idx + 1;
     }
 
-    this.input_statement = function(self, idx) {
+    this.input_statement = function (self, idx) {
         var statement = self.parser.statements[idx];
         var count = statement.children.length;
         var prompt = statement.children[0].text;
@@ -1751,7 +1751,10 @@ function Interpreter(parser) {
                 return -1; //pause until we get value for input
             }
 
-            self.setValue(variable, value);
+            // Todo take this out if shit breaks: jrc 12/18/2019
+            if (value) {
+                self.setValue(variable, value);
+            }
 
         }
         if (self.print_function) {
@@ -1762,7 +1765,7 @@ function Interpreter(parser) {
         return idx + 1;
     }
 
-    this.print_statement = function(self, idx) {
+    this.print_statement = function (self, idx) {
         var statement = self.parser.statements[idx];
         var count = statement.children.length;
         debug("PRINTING " + count);
@@ -1792,14 +1795,14 @@ function Interpreter(parser) {
         return idx + 1;
     }
 
-    this.cls_statement = function(self, idx) {
+    this.cls_statement = function (self, idx) {
         var statement = self.parser.statements[idx];
         if (self.clear_function)
             self.clear_function();
         return idx + 1;
     }
 
-    this.randomize_statement = function(self, idx) {
+    this.randomize_statement = function (self, idx) {
         var statement = self.parser.statements[idx];
         var v = self.evalExpr(statement.children[0]);
         if (is_number(v)) {
@@ -1810,7 +1813,7 @@ function Interpreter(parser) {
         return idx + 1;
     }
 
-    this.assignment_statement = function(self, idx) {
+    this.assignment_statement = function (self, idx) {
         var statement = self.parser.statements[idx];
         var count = statement.children.length;
         var variable = statement.children[0];
@@ -1820,7 +1823,7 @@ function Interpreter(parser) {
         return idx + 1;
     }
 
-    this.find_label = function(label) {
+    this.find_label = function (label) {
         var label_index = this.parser.label_index;
         if (label_index[label] === undefined)
             throw "ERROR: goto destination " + label + " not found";
@@ -1828,7 +1831,7 @@ function Interpreter(parser) {
         return label_index[label];
     }
 
-    this.if_statement = function(self, idx) {
+    this.if_statement = function (self, idx) {
         var statement = self.parser.statements[idx];
         var count = statement.children.length;
 
@@ -1850,14 +1853,14 @@ function Interpreter(parser) {
         return idx + 1;
     }
 
-    this.goto_statement = function(self, idx) {
+    this.goto_statement = function (self, idx) {
         var statement = self.parser.statements[idx];
         var label = statement.getText();
         return self.find_label(label);
     }
 
 
-    this.gosub_statement = function(self, idx) {
+    this.gosub_statement = function (self, idx) {
         var statement = self.parser.statements[idx];
         var label = statement.getText();
         self.gosub_stack.push(idx + 1);
@@ -1867,7 +1870,7 @@ function Interpreter(parser) {
         return self.find_label(label);
     }
 
-    this.return_statement = function(self, idx) {
+    this.return_statement = function (self, idx) {
         if (self.gosub_stack.length === 0) {
             throw "ERROR: RETURN without GOSUB";
         }
@@ -1876,7 +1879,7 @@ function Interpreter(parser) {
         return nidx;
     }
 
-    this.find_next = function(idx, varname) {
+    this.find_next = function (idx, varname) {
         var len = this.parser.statements.length;
         for (var i = idx + 1; i < len; i++) {
             var statement = this.parser.statements[i];
@@ -1896,7 +1899,7 @@ function Interpreter(parser) {
         throw "ERROR: FOR without NEXT";
     }
 
-    this.find_wend = function(idx, varname) {
+    this.find_wend = function (idx, varname) {
         var len = this.parser.statements.length;
         for (var i = idx + 1; i < len; i++) {
             var statement = this.parser.statements[i];
@@ -1908,11 +1911,11 @@ function Interpreter(parser) {
     }
 
 
-    this.while_statement = function(self, idx) {
+    this.while_statement = function (self, idx) {
         var statement = self.parser.statements[idx];
         var expression = statement.children[0];
         var val = self.evalExpr(expression);
-        if (typeof(val) !== "number" && typeof(val) !== "boolean") {
+        if (typeof (val) !== "number" && typeof (val) !== "boolean") {
             throw "ERROR: WHILE expression is not boolean";
         }
         if (val) {
@@ -1924,7 +1927,7 @@ function Interpreter(parser) {
         }
     }
 
-    this.wend_statement = function(self, idx) {
+    this.wend_statement = function (self, idx) {
 
         if (self.while_stack.length === 0) {
             throw "ERROR:  WEND without while";
@@ -1934,21 +1937,21 @@ function Interpreter(parser) {
         return whilepos;
     }
 
-    this.for_statement = function(self, idx) {
+    this.for_statement = function (self, idx) {
 
         var statement = self.parser.statements[idx];
         var loopvar = statement.children[0].getText();
         var start = statement.children[1];
         var startval = self.evalExpr(start);
 
-        if (typeof(startval) !== "number") {
+        if (typeof (startval) !== "number") {
             throw "ERROR: FOR expression is not numeric";
         }
 
         var end = statement.children[2];
         var endval = self.evalExpr(end);
 
-        if (typeof(endval) !== "number") {
+        if (typeof (endval) !== "number") {
             throw "ERROR: TO expression is not numeric";
         }
 
@@ -1982,7 +1985,7 @@ function Interpreter(parser) {
     }
 
 
-    this.next_statement = function(self, idx) {
+    this.next_statement = function (self, idx) {
 
         if (self.for_stack.length === 0) {
             throw "ERROR: NEXT without FOR";
@@ -2054,25 +2057,25 @@ function Interpreter(parser) {
         return nidx;
     }
 
-    this.end_statement = function(self, idx) {
+    this.end_statement = function (self, idx) {
         return self.parser.statements.length + 1;
     }
 
-    this.data_statement = function(self, idx) {
+    this.data_statement = function (self, idx) {
         var statement = self.parser.statements[idx];
         return idx + 1;
     }
 
-    this.dummy_statement = function(self, idx) {
+    this.dummy_statement = function (self, idx) {
         return idx + 1;
     }
 
-    this.clear_statement = function(self, idx) {
+    this.clear_statement = function (self, idx) {
         this.variables = new Array;
         return idx + 1;
     }
 
-    this.dim_statement = function(self, idx) {
+    this.dim_statement = function (self, idx) {
         debug("DIM DIMENSION");
         var statement = self.parser.statements[idx];
         for (var i = 0; i < statement.children.length; i++) {
@@ -2091,7 +2094,7 @@ function Interpreter(parser) {
         return idx + 1;
     }
 
-    this.run = function(idx) {
+    this.run = function (idx) {
         var statement = this.parser.statements[idx];
         debug("statement: " + statement);
         var type = statement.getType();
@@ -2103,7 +2106,7 @@ function Interpreter(parser) {
         return idx + 1;
     }
 
-    this.resume_input = function() {
+    this.resume_input = function () {
         var len = this.parser.statements.length;
         var idx = this.last_point;
         this.stop = false;
@@ -2119,7 +2122,7 @@ function Interpreter(parser) {
         this.last_point = idx;
     }
 
-    this.find_line_number = function(idx) {
+    this.find_line_number = function (idx) {
         var i = idx;
         while (i >= 0) {
             var statement = this.parser.statements[i];
@@ -2131,7 +2134,7 @@ function Interpreter(parser) {
         return 0;
     }
 
-    this.interpret = function() {
+    this.interpret = function () {
         debug("Interpreting");
 
         var len = this.parser.statements.length;
@@ -2181,7 +2184,7 @@ function Interpreter(parser) {
         this.last_point = idx;
     }
 
-    this.setParser = function(p) {
+    this.setParser = function (p) {
         this.parser = p;
     }
 

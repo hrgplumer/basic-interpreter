@@ -5,9 +5,9 @@ const BasicRunner = (terminalInput, printFunction, stringInputFunction, numericI
         return null;
 
     const [Parser, Interpreter] = Basic;
-    
+
     try {
-        const parser = new Parser(terminalInput);
+        const parser = new Parser(terminalInput.trim());
         parser.parse();
 
         const interpreter = new Interpreter();
@@ -19,7 +19,7 @@ const BasicRunner = (terminalInput, printFunction, stringInputFunction, numericI
             interpreter.push_input(input);
             try {
                 interpreter.resume_input();
-            } catch(error) {
+            } catch (error) {
                 console.trace(error);
             }
         }
